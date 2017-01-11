@@ -22,16 +22,14 @@ class MyList:
         self.length = 0
         self.first_item = None
         if alist:
-            for item in alist:
-                self.append(item)
+            self.extend(alist)
 
     def __str__(self):
-        """
-        """
+        """Human readable representation of the values contained in the list."""
         ret = '['
         item = self.first_item
         while item:
-            if isinstance(item.actual_data, str, int, float)):
+            if isinstance(item.actual_data, (str, int, float)):
                 ret  += "'{0}'".format(item)
             else: # types such as list or tuple or objects don't have quotes
                 ret  += "{0}".format(item)
@@ -74,7 +72,7 @@ class MyList:
 
         return cpt
 
-    def is_present(self, obj):
+    def is_in(self, obj):
         """ This method retuns True if obj is present in the list, False otherwise."""
         item = self.first_item
         while item:
@@ -95,15 +93,43 @@ class MyList:
             item.next_item = LinkedListItem(actual_data)
         self.length += 1
 
-    # def extend(self):
-    #     """
-    #     """
-    #     pass
+    def extend(self, seq):
+         """This method appends the contents of seq to the list.
 
-    # def insert(index, element):
-    #     """
-    #     """
-    #     pass
+         Return Value:
+         This method does not return any value but add the content to the existing list.
+         """
+         for item in seq:
+                self.append(item)
+
+
+
+    def insert(self, index, obj):
+        """The method insert() inserts object obj into list at offset index.
+
+        Args:
+        index (int)
+        obj (obj)
+
+        Return Value:
+        The method insert() does not return any value but insert an element at the given index.
+        """
+
+        if index > self.length:
+            index = self.length
+
+        prev = None
+        cur = self.first_item
+        i = 0
+        while i < index:
+            prev = cur
+            cur = cur.next_item
+            i += 1
+        if prev:
+            prev.next_item = LinkedListItem(obj, cur)
+        else:
+            self.first_item = LinkedListItem(obj, cur)
+        self.length += 1
 
     # def delete(index):
     #     """
@@ -121,11 +147,6 @@ class MyList:
     #     pass
 
     # def slice(pattern):
-    #     """
-    #     """
-    #     pass
-
-    # def is_true():
     #     """
     #     """
     #     pass
@@ -149,4 +170,3 @@ class MyList:
         self.length = 0
         self.first_item = None
 
-é"é"é"é"é"é"éé"é"é"é"é"é""'"'"'"'"'"''"'"'"'é"é"é"é"é"é"23232332é"é"é"é"
