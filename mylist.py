@@ -19,7 +19,7 @@ class MyList:
     """
     def __init__(self, alist = None):
 
-        self.length = 0
+        self._length = 0
         self.first_item = None
         if alist:
             self.extend(alist)
@@ -39,6 +39,13 @@ class MyList:
         ret += ']'
 
         return ret
+
+    def __increment_length__(self):
+        self._length += 1
+
+    def __decrement_length__(self):
+        if self._length > 0:
+            self._length -= 1
 
     def index(self, obj):
         """The method index() returns the lowest index in list that obj appears.
@@ -83,7 +90,11 @@ class MyList:
         return False
 
     def append(self, actual_data):
-        """ Add an item to the list. """
+        """ Add an item to the list.
+
+        Return Value:
+        This method does not return any value but add the content to the existing list.
+        """
         if not self.first_item:
             self.first_item = LinkedListItem(actual_data)
         else:
@@ -91,7 +102,7 @@ class MyList:
             while item.next_item:
                 item = item.next_item
             item.next_item = LinkedListItem(actual_data)
-        self.length += 1
+        self.__increment_length__()
 
     def extend(self, seq):
          """This method appends the contents of seq to the list.
@@ -115,8 +126,8 @@ class MyList:
         The method insert() does not return any value but insert an element at the given index.
         """
 
-        if index > self.length:
-            index = self.length
+        if index > self._length:
+            index = self._length
 
         prev = None
         cur = self.first_item
@@ -129,22 +140,45 @@ class MyList:
             prev.next_item = LinkedListItem(obj, cur)
         else:
             self.first_item = LinkedListItem(obj, cur)
-        self.length += 1
+        self.__increment_length__()
 
     # def delete(index):
     #     """
     #     """
     #     pass
 
-    # def remove(element):
-    #     """
-    #     """
-    #     pass
+    def remove(self, obj):
+        """
+        Remove the first item from the list whose value is obj.
 
-    # def pop(element):
-    #     """
-    #     """
-    #     pass
+        Args:
+        obj (obj): The object to be found
+
+        Return value:
+        None
+
+        Raises:
+        ValueError : It is an error if there is no such item.
+        """
+        previous_item = None
+        current_item = self.first_item
+        while current_item:
+            if current_item.actual_data == obj:
+                if previous_item:
+                    previous_item.next_item = current_item.next_item
+                else:
+                    self.first_item = current_item.next_item
+                self.__decrement_length__()
+                return None
+            previous_item = current_item
+            current_item = current_item.next_item
+        else:
+            raise ValueError("list.remove(x): x not in list")
+
+    def pop(obj):
+        """
+        """
+        pass
 
     # def slice(pattern):
     #     """
@@ -167,6 +201,6 @@ class MyList:
 
     def clear(self):
         """ Reset the list. """
-        self.length = 0
+        self._length = 0
         self.first_item = None
 

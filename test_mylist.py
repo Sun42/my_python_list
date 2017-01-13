@@ -2,7 +2,6 @@
 
 import unittest
 from mylist import MyList
-
 class TestMyList(unittest.TestCase):
 
     def test_init(self):
@@ -14,16 +13,16 @@ class TestMyList(unittest.TestCase):
         list_3.append('b')
 
         # then
-        self.assertEqual(list_1.length, 0)
-        self.assertEqual(list_2.length, 3)
-        self.assertEqual(list_3.length, 2)
+        self.assertEqual(list_1._length, 0)
+        self.assertEqual(list_2._length, 3)
+        self.assertEqual(list_3._length, 2)
 
     def test_str(self):
         # given
         list_1 = MyList()
         list_2 = []
 
-         # then
+        # then
         self.assertEqual(str(list_1), str(list_2))
 
         # when
@@ -83,7 +82,7 @@ class TestMyList(unittest.TestCase):
         # when
         list_1.extend(['d', 'e', 'f'])
         # then
-        self.assertEqual(list_1.length, 6)
+        self.assertEqual(list_1._length, 6)
         self.assertEqual(list_1.index('a'), 0)
         self.assertEqual(list_1.index('b'), 1)
         self.assertEqual(list_1.index('c'), 2)
@@ -97,20 +96,20 @@ class TestMyList(unittest.TestCase):
         # when
         list1.insert(0, 'a')
         # then
-        self.assertEqual(list1.length, 1)
+        self.assertEqual(list1._length, 1)
         self.assertEqual(list1.index('a'), 0)
 
         # when
         list1.insert(1, 'c')
         # then
-        self.assertEqual(list1.length, 2)
+        self.assertEqual(list1._length, 2)
         self.assertEqual(list1.index('a'), 0)
         self.assertEqual(list1.index('c'), 1)
 
         # when
         list1.insert(999, 'd')
         # then
-        self.assertEqual(list1.length, 3)
+        self.assertEqual(list1._length, 3)
         self.assertEqual(list1.index('a'), 0)
         self.assertEqual(list1.index('c'), 1)
         self.assertEqual(list1.index('d'), 2)
@@ -118,11 +117,50 @@ class TestMyList(unittest.TestCase):
         # when
         list1.insert(0, '!')
         # then
-        self.assertEqual(list1.length, 4)
+        self.assertEqual(list1._length, 4)
         self.assertEqual(list1.index('!'), 0)
         self.assertEqual(list1.index('a'), 1)
         self.assertEqual(list1.index('c'), 2)
         self.assertEqual(list1.index('d'), 3)
+
+    def test_remove(self):
+        # given
+        list_1 = MyList()
+
+        # then
+        self.assertRaises(ValueError, list_1.remove, 'item not found')
+        self.assertRaises(ValueError, list_1.remove, None)
+        # when
+        list_1.append('a')
+        list_1.remove('a')
+        # then
+        self.assertEqual(0, list_1._length)
+
+        # when
+        list_1.append('a')
+        list_1.append('b')
+        list_1.remove('a')
+
+        # then
+        self.assertEqual(list_1._length, 1)
+        self.assertEqual(list_1.index('b'), 0)
+
+        # when
+        list_1.extend(['c', 'd', 'e'])
+        list_1.remove('e')
+        # then
+        self.assertEqual(str(list_1), "['b', 'c', 'd']")
+
+        # when
+        list_1.remove('c')
+        # then
+        self.assertEqual(str(list_1), "['b', 'd']")
+
+        # when
+        list_1.remove('b')
+        list_1.remove('d')
+        # then
+        self.assertEqual(str(list_1), '[]')
 
 if __name__ == "__main__":
     unittest.main()
