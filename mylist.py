@@ -175,10 +175,33 @@ class MyList:
         else:
             raise ValueError("list.remove(x): x not in list")
 
-    def pop(obj):
+    def pop(self, obj = None):
         """
         """
-        pass
+        if self._length == 0:
+            raise IndexError("pop from empty list")
+        if obj is None:
+            obj = self.access(self._length - 1)
+        self.remove(obj)
+
+    def access(self, index):
+        if self._length == 0:
+            raise IndexError("list index out of range")
+        if index < 0:
+            index = self._length + index
+        if index < 0:
+            raise IndexError("list index out of range")
+        i = 0
+        current = self.first_item
+        while i < index and current:
+            if current is None:
+                raise IndexError("list index out of range")
+            current = current.next_item
+            i += 1
+        else:
+            if not current:
+                raise IndexError("list index out of range")
+            return current.actual_data
 
     # def slice(pattern):
     #     """

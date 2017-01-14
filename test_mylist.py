@@ -92,7 +92,7 @@ class TestMyList(unittest.TestCase):
 
     def test_insert(self):
         # given
-        list1  = MyList()
+        list1 = MyList()
         # when
         list1.insert(0, 'a')
         # then
@@ -162,5 +162,48 @@ class TestMyList(unittest.TestCase):
         # then
         self.assertEqual(str(list_1), '[]')
 
+    def test_access(self):
+        # check behaviour acces on an empty list
+        # given
+        list_1 = MyList()
+        # then
+        self.assertRaises(IndexError, list_1.access, 0)
+        # given
+        # check beahviour valid access
+        list_1.extend(['a', 'b', 'c'])
+        # then
+        self.assertEqual(list_1.access(0), 'a')
+        self.assertEqual(list_1.access(1), 'b')
+        self.assertEqual(list_1.access(2), 'c')
+        
+        # check behaviour acces on negative value
+        self.assertEqual(list_1.access(-1), 'c')
+        self.assertEqual(list_1.access(-2), 'b')
+        self.assertEqual(list_1.access(-3), 'a')
+        # check behaviour index out of range positive value
+        self.assertRaises(IndexError, list_1.access, 3)
+        # check beaviour acces out of range negative value 
+        self.assertRaises(IndexError, list_1.access, -4)
+        
+    def test_pop(self):
+        # Test behaviour with no args on an empty list
+        # given
+        list_1 = MyList()
+        # then
+        self.assertRaises(IndexError, list_1.pop)
+
+        # when
+        list_1.append('a')
+        list_1.pop()
+        # then
+        self.assertEqual(str(list_1), '[]')
+
+        # when
+        list_1.append('a')
+        list_1.append('b')
+        list_1.pop()
+        # then
+        self.assertEqual(str(list_1), "['a']")
+        
 if __name__ == "__main__":
     unittest.main()
